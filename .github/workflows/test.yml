@@ -1,0 +1,14 @@
+---
+name: TEST
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: self-hosted
+    steps:
+      - name: Print messsage
+        run: echo "Hello World from self-hosted runner"
+  
+  
