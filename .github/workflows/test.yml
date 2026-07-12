@@ -7,6 +7,9 @@ on:
 jobs:
   hello:
     runs-on: self-hosted
+    container:
+      image: ubuntu-latest
+      
     steps:
       - name: Print messsage
         run: echo "Hello World from self-hosted runner"
