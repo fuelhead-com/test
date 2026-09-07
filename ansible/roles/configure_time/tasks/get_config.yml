@@ -1,0 +1,36 @@
+---
+- name: Get system config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system?attributes="
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_system
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_system
+  ansible.builtin.set_fact:
+    get_system: "{{ get_system.json | default({}) }}"
+
+- name: Get system NTP associations
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/ntp_associations/%2A?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_ntp_associations
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_ntp
+  ansible.builtin.set_fact:
+    get_ntp_associations: "{{ get_ntp_associations.json | default({}) }}"

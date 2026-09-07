@@ -1,0 +1,136 @@
+---
+- name: Patch timezone
+  vars:
+    configured_timezone: "{{ get_system.timezone }}"
+    required_timezone: "{{ time.timezone | default(time_schema.time.timezone.default) | default('europe/stockholm') }}"
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body:
+      timezone: "{{ required_timezone }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: configured_timezone != required_timezone
+
+- name: Patch global NTP config
+  vars:
+    configured_global_ntp_config: "{{ get_system.ntp_config }}"
+    required_global_ntp_config:
+      authentication_enable: false
+      dhcp_enable: "{{ time.ntp.dhcp_enable | default(time_schema.ntp.dhcp_enable.default) }}"
+      enable: "{{ time.ntp.enable | default(time_schema.ntp.enable.default) }}"
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body:
+      ntp_config: "{{ required_global_ntp_config }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: configured_global_ntp_config != required_global_ntp_config
+
+- name: Patch NTP VRF
+  vars:
+    vrf: "{{ time.ntp.vrf | default(time_schema.ntp.vrf.default) | default('default') }}"
+    configured_ntp_vrf: "{{ get_system.ntp_config_vrf }}"
+    required_ntp_vrf: >-
+      {{
+        {
+          vrf: '/rest/' ~ restversion ~ '/system/vrfs/' ~ vrf
+        }
+      }}
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body:
+      ntp_config_vrf: "{{ required_ntp_vrf }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: configured_ntp_vrf != required_ntp_vrf
+
+- name: Delete NTP associations
+  vars:
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_ntp_association_config.delete | default({}) | dict2items }}"
+  loop_control:
+    label: "NTP server: {{ item.key }}"
+
+- name: Put NTP associations
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 200
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: put
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_ntp_association_config.put | default({}) | dict2items }}"
+  loop_control:
+    label: "NTP server: {{ item.key }}"
+
+- name: Post NTP associations
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_ntp_association_config.post | default({}) | dict2items }}"
+  loop_control:
+    label: "NTP server: {{ item.key }}"

@@ -1,0 +1,54 @@
+---
+time_schema:
+  timezone:
+    default: europe/stockholm
+  ntp:
+    dhcp_enable:
+      valid:
+        - true
+        - false
+      default: true
+    enable:
+      valid:
+        - true
+        - false
+      default: false
+    vrf:
+      default: mgmt
+    servers:
+      ntp_server: # NTP Association server name or IPv4/v6 Address
+        minpoll:
+          valid:
+            min: 4
+            max: 17
+          default: 6
+        maxpoll:
+          valid:
+            min: 4
+            max: 17
+          default: 10
+        burst_mode:
+          valid:
+            - null
+            - burst
+            - iburst
+          default: null
+        prefer:
+          valid:
+            - true
+            - false
+          default: false
+        version:
+          valid:
+            min: 3
+            max: 4
+          default: 4
+
+ntp_association_post_attributes:
+  - address
+  - association_attributes
+  - vrf
+
+ntp_association_put_attributes:
+  - association_attributes
+    

@@ -1,0 +1,8 @@
+---
+- name: Generate NTP association config
+  ansible.builtin.set_fact:
+    generate_ntp_association_config: >-
+      {{
+        vars
+        | aoscx_generate_ntp_association_config
+      }}
