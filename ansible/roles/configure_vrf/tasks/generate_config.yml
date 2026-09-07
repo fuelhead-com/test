@@ -1,0 +1,8 @@
+---
+- name: Generate vrf config
+  ansible.builtin.set_fact:
+    generate_vrf_config: >-
+      {{
+        vars
+        | aoscx_generate_vrf_config
+      }}

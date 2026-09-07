@@ -1,0 +1,29 @@
+---
+vrf_schema:
+  vrf: # VRF name:
+    https_server_enable:
+      valid:
+        - true
+        - false
+      default: true
+    ssh_server_enable:
+      valid:
+        - true
+        - false
+      default: true
+    telnet_server_enable:
+      valid:
+        - true
+        - false
+      default: true
+
+vrf_post_attributes:
+  - name
+  - https_server
+  - ssh_enable
+  - telnet_server_enable
+
+vrf_put_attributes:
+  - https_server
+  - ssh_enable
+  - telnet_server_enable

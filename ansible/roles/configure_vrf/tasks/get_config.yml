@@ -1,0 +1,18 @@
+---
+- name: Get VRFs
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A?attributes="
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_vrfs
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_vrfs
+  ansible.builtin.set_fact:
+    get_vrfs: "{{ get_vrfs.json | default({}) }}"
