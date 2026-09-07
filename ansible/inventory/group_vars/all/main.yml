@@ -1,0 +1,3 @@
+aoscx_api_version: 10.16
+restversion: "v{{ aoscx_api_version }}"
+baseurl: "https://{{ ansible_host }}/rest/{{ restversion }}"

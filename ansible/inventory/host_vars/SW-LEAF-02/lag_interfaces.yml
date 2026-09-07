@@ -1,0 +1,70 @@
+---
+lag_interfaces:
+  lag10:
+    enabled: true
+    description: description lag interface 10 af
+    lacp_mode: passive
+    lacp_rate: fast
+    multi_chassis: false
+    routing: false
+    switchport_mode: trunk
+    trunk_native_tagged: true
+    trunk_allowed_vlan:
+      - 20
+      - 10
+      - 50
+      - 60
+    trunk_native_vlan: 20
+    qos_trust: cos
+    interfaces:
+      - 1/1/10
+      - 1/1/14
+      - 1/1/17
+  lag15:
+    enabled: true
+    description: description lag interface 15
+    multi_chassis: true
+    routing: false
+    switchport_mode: trunk
+    trunk_native_tagged: false
+    trunk_allowed_vlan:
+      - 20
+      - 50
+      - 80
+    trunk_native_vlan: 1
+    qos_trust: cos
+    interfaces:
+      - 1/1/15
+  lag20:
+    enabled: true
+    description: description lag interface 20 asdf
+    multi_chassis: true
+    routing: true
+    ipv4_address: 1.2.3.4/24
+    ip_mtu: 9198
+    qos_trust: dscp
+    interfaces:
+      - 1/1/20
+  lag30:
+    enabled: true
+    description: description lag interface 20 asdf
+    multi_chassis: true
+    routing: true
+    ipv4_address: 5.6.7.8/24
+    ip_mtu: 9198
+    qos_trust: dscp
+    interfaces:
+      - 1/1/30
+  lag256:
+    enabled: true
+    description: lag 256 - VSX ISL
+    lacp_mode: active
+    multi_chassis: false
+    routing: false
+    switchport_mode: trunk
+    trunk_native_tagged: true
+    trunk_allowed_vlan: all
+    trunk_native_vlan: 1
+    interfaces:
+      - 1/1/49
+      - 1/1/50

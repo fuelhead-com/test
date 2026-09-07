@@ -1,0 +1,9 @@
+---
+evpn:
+  arp_suppression_enable: false
+  mac_move_count: 5
+  mac_move_timer: 180
+  redistribute_local_mac: false
+  redistribute_local_svi: false
+
+evpn_asn: 65022

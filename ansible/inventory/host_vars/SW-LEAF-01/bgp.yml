@@ -1,0 +1,60 @@
+---
+router_bgp:
+  65022:
+    always_compare_med: true
+    bestpath_as_path_multipath_relax: true
+    deterministic_med: true
+    enable: true
+    log_neighbor_changes: true
+    maximum_paths: 8
+    router_id: "{{ loopback_interfaces.loopback0.ipv4_address }}"
+    timers:
+      connect-retry: 120
+      holdtime: 180
+      keepalive: 60
+    vrf: default
+    neighbors:
+      spine-RR:
+        bfd_enable: false
+        description: Spine and Route Reflectors
+        is_peer_group: true
+        local_interface: loopback0
+        password: "{{ bgp_key }}"
+        replace_password: false
+        remote_as: 65022
+        route_reflector_client:
+          ipv4-unicast: false
+          ipv6-unicast: false
+          l2vpn-evpn: false
+          vpnv4-unicast: false
+        send_community:
+          ipv4-unicast: none
+          ipv6-unicast: none
+          l2vpn-evpn: both
+          vpnv4-unicast: none
+        enable: true
+        timers:
+          connect-retry: 120
+          holdtime: 180
+          keepalive: 60
+        update_source: 
+      10.0.0.11:
+        activate:
+          ipv4-unicast: true
+          ipv6-unicast: false
+          l2vpn-evpn: true
+          vpnv4-unicast: false
+        bgp_peer_group: spine-RR
+        description: SW-ASDF01
+        enable: true
+        is_peer_group: false
+      10.0.0.12:
+        activate:
+          ipv4-unicast: true
+          ipv6-unicast: false
+          l2vpn-evpn: true
+          vpnv4-unicast: false
+        bgp_peer_group: spine-RR
+        description: SW-ASDF02
+        enable: true
+        is_peer_group: false

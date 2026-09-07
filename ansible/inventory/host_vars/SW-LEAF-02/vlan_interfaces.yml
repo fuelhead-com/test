@@ -1,0 +1,18 @@
+---
+vlan_interfaces:
+  vlan10:
+    description: Vlan Interface 20 adf
+    enabled: True
+    ipv4_address: 10.20.10.2/24
+    ip_ospf_enabled: true
+    ip_ospf_process: 1
+    ip_ospf_area: 0.0.0.0
+    ip_ospf_bfd: true
+    ip_ospf_network: point-to-point
+    ip_ospf_keychain: ospf-keychain
+    ip_ospf_passive: false
+  vlan50:
+    description: Vlan Interface 20 asdf
+    enabled: False
+    ipv4_address: 10.20.50.2/24
+    ip_mtu: 9198

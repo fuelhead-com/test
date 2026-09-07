@@ -1,0 +1,6 @@
+---
+alias:
+  wrnet:
+    cmd: "copy startup-config tftp://{{ tftp_servers.server_1.ip }}/{{ inventory_hostname }}-config.confg cli vrf mgmt"
+  wrjson:
+    cmd: "copy startup-config tftp://{{ tftp_servers.server_1.ip }}/{{ inventory_hostname }}-config.json json vrf mgmt"

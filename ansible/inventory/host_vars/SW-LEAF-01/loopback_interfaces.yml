@@ -1,0 +1,14 @@
+---
+loopback_interfaces:
+  loopback0:
+    description: description OSPF/BGP Underlay
+    ipv4_address: 10.10.10.1/32
+    ip_ospf_enabled: true
+    ip_ospf_process: 1
+    ip_ospf_area: 0.0.0.0
+  loopback1:
+    description: VTEP Source
+    ipv4_address: 10.10.10.2/32
+    ip_ospf_enabled: true
+    ip_ospf_process: 1
+    ip_ospf_area: 0.0.0.0

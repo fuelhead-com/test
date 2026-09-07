@@ -1,0 +1,8 @@
+---
+vxlan_interface:
+  vxlan1:
+    description: "&#¤/&%#!?"
+    enabled: true
+    source_ip: "{{ vtep_ip }}"
+  
+vni_offset: 10000

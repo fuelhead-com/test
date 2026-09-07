@@ -1,0 +1,17 @@
+---
+all:
+  children:
+    all_leafs:
+      hosts:
+        SW-LEAF-01:
+          ansible_host: 192.168.7.11
+        SW-LEAF-02:
+          ansible_host: 192.168.7.12
+    
+    site_a_leafs:
+      hosts:
+        SW-LEAF-01:
+
+    site_b_leafs:
+      hosts:
+        SW-LEAF-02:

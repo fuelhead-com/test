@@ -1,0 +1,14 @@
+---
+vrf:
+  default:
+    https_server_enable: true
+    ssh_server_enable: false
+    telnet_server_enable: false
+  mgmt:
+    https_server_enable: true
+    ssh_server_enable: true
+    telnet_server_enable: true
+  KA:
+    https_server_enable: false
+    ssh_server_enable: false
+    telnet_server_enable: false

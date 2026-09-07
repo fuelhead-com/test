@@ -1,0 +1,25 @@
+---
+keychains:
+  - name: ospf-keychain
+    keys: 
+      - id: 1 
+        key: "{{ ospf_key_1 }}"
+        cryptographic_algorithm: sha512
+
+  - name: test-chain
+    keys: 
+      # - id: 1
+      #   key: "adsafdsasdfasdf"
+      #   cryptographic_algorithm: sha512
+      # - id: 4
+      #   key: "adsafdsasdf"
+      #   cryptographic_algorithm: sha512
+      - id: 5
+        key: "adsafdsasdf"
+        cryptographic_algorithm: sha512
+
+tftp_servers:
+  server_1:
+    ip: 192.168.6.50
+  server_2:
+    ip: 192.168.6.51

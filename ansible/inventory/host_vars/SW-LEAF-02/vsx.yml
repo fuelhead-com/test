@@ -1,0 +1,10 @@
+---
+vsx:
+  device_role: secondary
+  inter_switch_link: lag256
+  keepalive_peer_ip: 192.168.254.0
+  keepalive_src_ip: 192.168.254.1
+  linkup_delay_timer: 600
+  split_recovery_disable: true
+  system_mac: "{{ virtual_mac }}"
+  vrf: KA

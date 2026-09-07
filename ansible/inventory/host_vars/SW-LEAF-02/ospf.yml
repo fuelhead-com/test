@@ -1,0 +1,18 @@
+---
+router_ospf:
+  1:
+    max_metric_router_lsa_on_startup: 900
+    passive_interface_default: True
+    reference_bandwidth: 100000
+    router_id: 10.10.10.3
+    vrf: default
+    areas:
+      0.0.0.0:
+      0.0.0.5:
+        area_type: nssa
+        default_metric: 6        
+  5:
+    reference_bandwidth: 300000
+  7:
+    areas:
+      0.0.0.0:
