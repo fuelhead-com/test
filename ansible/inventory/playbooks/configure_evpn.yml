@@ -1,0 +1,66 @@
+---
+- name: Configure EVPN
+  hosts: all
+  gather_facts: false
+
+  pre_tasks:
+    - name: login to switch
+      ansible.builtin.uri:
+        url: "{{ baseurl }}/login"
+        method: POST
+        body_format: form-urlencoded
+        body:
+          username: "{{ username }}"
+          password: "{{ password }}"
+          enter: sign in
+        status_code: 200
+        validate_certs: false
+      register: login
+      delegate_to: localhost
+
+    - name: Get  running-config
+      ansible.builtin.uri:
+        url: "{{ baseurl }}/configs/running-config"
+        method: get
+        headers:
+          Cookie: "{{ login.cookies_string }}"
+          accept: text/plain
+        status_code: 200
+        validate_certs: false
+        return_content: true
+      register: running_config
+      delegate_to: localhost
+
+  roles:
+    - configure_evpn
+
+  tasks:
+    - name: Get running-config after
+      ansible.builtin.uri:
+        url: "{{ baseurl }}/configs/running-config"
+        method: get
+        headers:
+          Cookie: "{{ login.cookies_string }}"
+          accept: text/plain
+        status_code: 200
+        validate_certs: false
+        return_content: true
+      register: running_config_after
+      delegate_to: localhost
+
+    - name: Logout from switch
+      ansible.builtin.uri:
+        url: "{{ baseurl }}/logout"
+        method: POST
+        return_content: true
+        headers:
+          Cookie: "{{ login.cookies_string }}"
+        status_code: 200
+        validate_certs: false
+      register: logout
+      delegate_to: localhost
+
+    - name: Diff config
+      ansible.utils.fact_diff:
+        before: "{{ running_config.content }}"
+        after: "{{ running_config_after.content }}"

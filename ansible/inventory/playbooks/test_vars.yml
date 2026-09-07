@@ -1,0 +1,9 @@
+
+- name: Print vars
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Print all vars
+      ansible.builtin.debug:
+        var: test_router_id
