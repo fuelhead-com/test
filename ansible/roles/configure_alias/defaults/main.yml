@@ -1,0 +1,10 @@
+alias_schema:
+    alias_name: # Alias name configuration
+      cmd:
+
+alias_post_attributes:
+  - alias_definition
+  - alias_name
+
+alias_put_attributes:
+  - alias_definition

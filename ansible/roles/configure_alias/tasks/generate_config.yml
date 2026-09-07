@@ -1,0 +1,8 @@
+---
+- name: Generate alias config
+  ansible.builtin.set_fact:
+    generate_alias_config: >-
+      {{
+        vars
+        | aoscx_generate_alias_config
+      }}
