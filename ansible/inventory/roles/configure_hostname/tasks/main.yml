@@ -1,0 +1,37 @@
+---
+- name: Get system config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system?selector"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 200
+    validate_certs: false
+  register: running_system_config
+  delegate_to: localhost
+
+- name: set_facts
+  ansible.builtin.set_fact:
+    hostname_config:
+      required:
+        hostname: "{{ inventory_hostname }}"
+      configured:
+        hostname: "{{ running_system_config.json.hostname }}"
+
+- name: Patch hostname
+  vars:
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ hostname_config.required }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: hostname_config.required != hostname_config.configured
