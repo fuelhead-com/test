@@ -1,0 +1,18 @@
+---
+# This file was automatically created by the Create Overlay VLAN workflow.
+id: {{ id }}
+name: {{ name }}
+description: {{ description }}
+enabled: {{ enabled }}
+ip_igmp_snooping_enable: {{ igmp_snooping }}
+type: {{ type }}
+scope:
+  type: {{ scope.type }}
+  targets:
+{% for target in scope.targets %}
+    - {{ target }}
+{% endfor %}
+vlan_tagging:
+{% for tag in vlan_tagging %}
+  - {{ tag }}
+{% endfor %}
