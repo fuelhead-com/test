@@ -1,0 +1,35 @@
+---
+vlan_schema:
+  id: # VLAN identifier
+    name:
+      default: null
+    description:
+      default: null
+    enabled:
+      valid:
+        - true
+        - false
+      default: true
+    ip_igmp_snooping_enable:
+      valid:
+        - true
+        - false
+      default: false
+  scope:
+    type:
+      valid:
+        - explicit
+        - group
+      default: explicit
+    targets: # List of hosts or groups
+
+vlan_post_attributes:
+  - id
+  - name
+  - description
+  - mgmd_enable
+
+vlan_put_attributes:
+  - name
+  - description
+  - mgmd_enable

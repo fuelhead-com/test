@@ -1,0 +1,8 @@
+---
+- name: Generate VLAN config
+  ansible.builtin.set_fact:
+    generate_vlan_config: >-
+      {{
+        vars
+        | aoscx_generate_vlan_config
+      }}

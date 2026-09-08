@@ -1,0 +1,18 @@
+---
+- name: Locate local VLANs files
+  ansible.builtin.set_fact:
+    local_vlan_files: >-
+      {{
+        lookup('fileglob', playbook_dir ~ '/../network_data/vlans/local/*.yml', wantlist=True)
+        +
+        lookup('fileglob', playbook_dir ~ '/../network_data/vlans/local/*.yaml', wantlist=True)
+      }}
+
+- name: Locate overlay VLANs files
+  ansible.builtin.set_fact:
+    overlay_vlan_files: >-
+      {{
+        lookup('fileglob', playbook_dir ~ '/../network_data/vlans/overlay/*.yml', wantlist=True)
+        +
+        lookup('fileglob', playbook_dir ~ '/../network_data/vlans/overlay/*.yaml', wantlist=True)
+      }}

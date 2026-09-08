@@ -1,0 +1,17 @@
+---
+- name: Get VLANS
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vlans/%2A"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_vlans
+  delegate_to: localhost
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_vlans: "{{ get_vlans.json | default({}) }}"
