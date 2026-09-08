@@ -1,0 +1,94 @@
+---
+- name: Create empty dicts
+  ansible.builtin.set_fact:
+    configured_keychain_keys_list: {}
+    required_keys: {}
+
+- name: Create list of required keychains
+  ansible.builtin.set_fact:
+    required_keychains_list: >-
+      {{ 
+        keychains
+        | default([])
+        | map(attribute='name')
+        | list
+      }}
+
+- name: Create list of configured keychains
+  ansible.builtin.set_fact:
+    configured_keychains_list: "{{ get_keychains_and_keys.keys() | default([]) }}"
+
+- name: Create dictionary of configured keys in keychains
+  ansible.builtin.set_fact:
+    configured_keychain_keys_list: >-
+      {{
+        configured_keychain_keys_list
+        | combine({
+            item: {
+              'keys': get_keychains_and_keys[item]['keys'] | list
+            }
+          })
+      }}
+  loop: "{{ get_keychains_and_keys.keys() | list | default([]) }}"
+
+- name: Create list of required keys
+  ansible.builtin.set_fact:
+    required_keys: >-
+      {{
+        required_keys
+        | combine({
+            item.0.name:
+              (
+                required_keys[item.0.name] | default([])
+              ) + [item.1.id]
+        })
+      }}
+  loop: "{{ keychains | subelements('keys', skip_missing=True) }}"
+  loop_control:
+    label: "Keychain: {{ item.0.name }}, key: {{ item.1.id }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# - name: Normalize required keychains
+#   ansible.builtin.set_fact:
+#     normalized_required_keychains: >-
+#       {{
+#         keychains
+#         | default([])
+#         | aoscx_normalize_config(keychain_schema)
+#       }}
+      
+# - name: Keep only mapped attributes in get_interfaces_config_dict
+#   ansible.builtin.set_fact:
+#     cleaned_get_keychains_and_keys: >-
+#       {{ 
+#         get_keychains_and_keys
+#         | default({})
+#         | aoscx_filter_switch_config_fields(keychain_mapped_attributes.keys())
+#       }}

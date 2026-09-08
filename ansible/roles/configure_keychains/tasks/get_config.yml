@@ -1,0 +1,18 @@
+---
+- name: Get keychains and keys
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/keychains/%2A?attributes=&depth=3"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_keychains_and_keys
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_keychains_and_keys: "{{ get_keychains_and_keys.json | default({}) }}"

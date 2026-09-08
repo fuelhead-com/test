@@ -1,0 +1,82 @@
+---
+- name: Post keychains
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ keychain_post_dict | default({}) | dict2items }}"
+  loop_control:
+    label: "Keychain: {{ item.key }}"
+
+- name: Post keys
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ keys_post_dict | default({}) | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Delete keys
+  vars:
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ keys_delete_dict | default({}) | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Delete keychains
+  vars:
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ keychain_delete_dict | default({}) | dict2items }}"
+  loop_control:
+    label: "Keychain: {{ item.key }}"

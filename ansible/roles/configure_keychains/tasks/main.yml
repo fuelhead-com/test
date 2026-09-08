@@ -1,0 +1,5 @@
+---
+- import_tasks: get_config.yml
+- import_tasks: normalize.yml
+- import_tasks: generate_config.yml
+- import_tasks: configure.yml

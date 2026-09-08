@@ -1,0 +1,83 @@
+---
+- name: Create default empty dicts
+  ansible.builtin.set_fact:
+    keychain_delete_dict: {}
+    keychain_post_dict: {}
+    keys_post_dict: {}
+    keys_delete_dict: {}
+
+- name: Generate keychain post dict
+  ansible.builtin.set_fact:
+    keychain_post_dict: >-
+      {{
+        keychain_post_dict
+        | combine({
+          item: {
+            "body": {
+              "name": item
+            },
+            "url": baseurl~"/system/keychains"
+          }
+        })
+      }}
+  loop: "{{ required_keychains_list | default([]) }}"
+  loop_control:
+    label: "Keychain: {{ item }}"
+  when: item not in (configured_keychains_list | default([]))
+
+- name: Generate keychain delete dict
+  ansible.builtin.set_fact:
+    keychain_delete_dict: >-
+      {{
+        keychain_delete_dict
+        | combine({
+          item: {
+             "url": baseurl~"/system/keychains/"~item
+          }
+        })
+      }}
+  loop: "{{ configured_keychains_list | default([]) }}"
+  loop_control:
+    label: "Keychain: {{ item }}"
+  when: item not in (required_keychains_list | default([]))
+    
+- name: Generate keys post dict
+  ansible.builtin.set_fact:
+    keys_post_dict: >-
+      {{
+        keys_post_dict
+        | combine({
+            item.0.name~"_key_"~item.1.id: {
+              "body": {
+                "auth_key": item.1.key,
+                "auth_type": item.1.cryptographic_algorithm,
+                "key_id": item.1.id
+              },
+              "keychain": item.0.name,
+              "key_id": item.1.id,
+              "url": baseurl~"/system/keychains/"~item.0.name~"/keys"
+            }
+        })
+      }}
+  loop: "{{ keychains | subelements('keys', skip_missing=True) }}"
+  loop_control:
+    label: "Keychain: {{ item.0.name }}, key: {{ item.1.id  }}"
+  when: item.1.id | string not in (
+      configured_keychain_keys_list[item.0.name]['keys'] | default([])
+    )
+
+- name: Generate keys delete dict
+  ansible.builtin.set_fact:
+    keys_delete_dict: >-
+      {{
+        keys_delete_dict
+        | combine({
+          item.0.key~"_key_"~item.1: {
+            "url": baseurl~"/system/keychains/"~item.0.key~"/keys/"~item.1
+          }
+        })
+      }}
+  loop: "{{ configured_keychain_keys_list | default({}) | dict2items | subelements('value.keys', skip_missing=True) }}"
+  loop_control:
+    label: "Keychain: {{ item.0.key }}, Key: {{ item.1 }}"
+  when: (item.1 | int) not in (required_keys[item.0.key] | default([]))
