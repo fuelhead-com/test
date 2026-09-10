@@ -1,0 +1,16 @@
+---
+- name: Generate router ospf
+  ansible.builtin.set_fact:
+    generate_router_ospf_config: >-
+      {{
+        vars
+        | aoscx_generate_ospf_router_config
+      }}
+
+- name: Generate OSPF area config
+  ansible.builtin.set_fact:
+    generate_ospf_area_config: >-
+      {{
+        vars
+        | aoscx_generate_ospf_area_config
+      }}

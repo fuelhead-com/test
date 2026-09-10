@@ -1,0 +1,68 @@
+---
+router_ospf_schema:
+  instance: #Process-ID 1-65535
+    max_metric_router_lsa_on_startup:
+      valid:
+        min: 5
+        max: 86400
+      default: 600
+      mandatory: true
+    passive_interface_default:
+      valid:
+        - True
+        - False
+      default: False
+      mandatory: true
+    reference_bandwidth:
+      valid:
+        min: 1
+        max: 4000000
+      default: 100000
+      mandatory: true
+    router_id:
+      default: 0.0.0.0
+      mandatory: true
+    vrf:
+      default: default
+    areas:
+      area: #A.B.C.D, Area id in IPv4 address notation
+        area_type:
+          valid:
+            - default
+            - stub
+            - stub_no_summary
+            - nssa
+            - nssa_no_summary
+          default: default
+          mandatory: true
+        default_metric:
+          valid:
+            min: 0
+            max: 16777215
+          default: 1
+          mandatory: true
+
+router_ospf_post_attributes:
+  # - active_interfaces
+  - admin_router_id
+  - auto_cost_ref_bw
+  - instance_tag
+  - passive_interface_default
+  - stub_router_adv
+
+router_ospf_put_attributes:
+  - active_interfaces
+  - admin_router_id
+  - auto_cost_ref_bw
+  - passive_interface_default
+  - stub_router_adv
+
+
+ospf_area_post_attributes:
+  - area_id
+  - area_type
+  - other_config
+
+ospf_area_put_attributes:
+  - area_type
+  - other_config

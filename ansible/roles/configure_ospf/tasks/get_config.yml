@@ -1,0 +1,36 @@
+---
+- name: Get OSPF Routers
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/ospf_routers/%2A?selector=configuration"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_ospf_routers
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_ospf_routers
+  ansible.builtin.set_fact:
+    get_ospf_routers: "{{ get_ospf_routers.json | default({}) }}"
+
+- name: Get OSPF areas
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/ospf_routers/%2A/areas/%2A?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_ospf_areas
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_ospf_areas
+  ansible.builtin.set_fact:
+    get_ospf_areas: "{{ get_ospf_areas.json | default({}) }}"
