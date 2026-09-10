@@ -1,0 +1,8 @@
+---
+- name: Generate lag interface config
+  ansible.builtin.set_fact:
+    generate_lag_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_lag_interface_config
+      }}

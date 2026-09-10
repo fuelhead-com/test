@@ -1,0 +1,64 @@
+---
+- name: Post lag interfaces
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_lag_interface_config.post | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"
+
+- name: Put lag interfaces
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 200
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: put
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_lag_interface_config.put | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"
+
+- name: Delete lag interfaces
+  vars:
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_lag_interface_config.delete | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"

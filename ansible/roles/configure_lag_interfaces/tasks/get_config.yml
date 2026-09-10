@@ -1,0 +1,17 @@
+---
+- name: Get lag interfaces
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/interfaces/%2A?attributes=&selector=writable&filter=type%3Alag"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_lag_interfaces
+  delegate_to: localhost
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_lag_interfaces: "{{ get_lag_interfaces.json | default({}) }}"

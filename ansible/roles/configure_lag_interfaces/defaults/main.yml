@@ -1,0 +1,132 @@
+---
+lag_interfaces_schema:
+  interface: # LAG interface 1-256
+    enabled:
+      valid:
+        - true
+        - false
+      default: false
+    lacp_mode:
+      valid:
+        - active
+        - passive
+      default: active
+    lacp_rate:
+      valid:
+        - slow
+        - fast
+      default: slow
+    multi_chassis:
+      valid:
+        - true
+        - false
+      default: false
+    description:
+      default: null
+    interfaces: # List of physical interfaces
+      default: null
+    routing:
+      valid:
+        - true
+        - false
+      default: true
+    ipv4_address:
+      default: null
+    ip_mtu:
+      valid:
+        min: 68
+        max: 9198
+      default: 1500
+    qos_cos:
+      valid:
+        min: 0
+        max: 7
+      default: null
+    qos_dscp:
+      valid:
+        min: 0
+        max: 63
+      default: null
+    qos_trust:
+      valid:
+        - qos
+        - dscp
+        - none
+      default: none
+    switchport_mode:
+      valid:
+        - access
+        - trunk
+      default: trunk
+    access_vlan: # VLAN-ID
+      default: 1
+    trunk_allowed_vlan: # List of VLANs or all
+      default: all
+    trunk_native_vlan:
+      default: 1
+    trunk_native_tagged:
+      valid:
+        - true
+        - false
+      default: false
+    stp_bpdu_filter:
+      valid:
+        - true
+        - false
+      default: false
+    stp_bpdu_guard:
+      valid:
+        - true
+        - false
+      default: false
+    stp_loop_guard:
+      valid:
+        - true
+        - false
+      default: false
+    stp_port_type:
+      valid:
+        - admin-edge
+        - admin-network
+      default: admin-network
+    stp_root_guard:
+      valid:
+        - true
+        - false
+      default: false
+    vrf:
+      default: default
+    
+lag_interfaces_post_attributes:
+  - admin
+  - name
+  - description
+  - interfaces
+  - ip4_address # Endast om routing är true, annars null
+  - ip_mtu # Endast om routing är true, annars null
+  - lacp # null eller passive = lacp_mode active eller passive. Kan inte vara passive om multi_chassis är true
+  - other_config # mclag_enabled true or false = multichassi true eller false
+  - qos_config
+  - routing
+  - stp_config
+  - type
+  - vlan_mode # Endast om routing är false, annars null (access, native-tagged eller native-untagged)
+  - vlan_tag # Detta är native vlan oavsett om det är taggat eller otaggat. Om porten är access så är detta vlanet. Endast om routing är false , annars null
+  - vlan_trunks # Dictionary med allowed vlans eller {} om alla vlan ska tillåtas. Endast om routing är false, annars {}
+  - vrf
+
+lag_interfaces_put_attributes:
+  - admin
+  - description
+  - interfaces
+  - ip4_address # Endast om routing är true, annars null
+  - ip_mtu # Endast om routing är true, annars null
+  - lacp # null eller passive = lacp_mode active eller passive. Kan inte vara passive om multi_chassis är true
+  - other_config # mclag_enabled true or false = multichassi true eller false lacp-time som motsvarar lacp_rate ligger också här.
+  - qos_config
+  - routing
+  - stp_config
+  - vlan_mode # Endast om routing är false, annars null (access, native-tagged eller native-untagged)
+  - vlan_tag # Detta är native vlan oavsett om det är taggat eller otaggat. Om porten är access så är detta vlanet. Endast om routing är false , annars null
+  - vlan_trunks # Dictionary med allowed vlans eller {} om alla vlan ska tillåtas. Endast om routing är false, annars {}
+  - vrf
