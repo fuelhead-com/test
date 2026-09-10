@@ -1,0 +1,16 @@
+---
+- name: Generate loopback ospf interface config
+  ansible.builtin.set_fact:
+    generate_loopback_ospf_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_loopback_ospf_interface_config
+      }}
+
+- name: Generate loopback interface config
+  ansible.builtin.set_fact:
+    generate_loopback_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_loopback_interface_config
+      }}

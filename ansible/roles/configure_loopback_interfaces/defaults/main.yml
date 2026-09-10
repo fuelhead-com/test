@@ -1,0 +1,31 @@
+---
+loopback_interfaces_schema:
+  interface: # Interface name
+    description: # DESC  1-64 printable ASCII characters
+      default: null
+    ip_ospf_area: # Area id
+      default: null
+    ip_ospf_enabled:
+      valid:
+        - true
+        - false
+      default: true
+    ip_ospf_process:
+      valid:
+        min: 1
+        max: 65535
+      default: null
+    ipv4_address: # A.B.C.D/M  Interface IP address 
+      default: null
+
+loopback_interfaces_post_attributes:
+  - name
+  - description
+  - ip4_address
+  - ospf_if_shutdown
+  - type
+
+loopback_interfaces_put_attributes:
+  - description
+  - ospf_if_shutdown
+  - ip4_address
