@@ -1,0 +1,45 @@
+---
+- name: Get ospf interfaces
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/ospf_routers/%2A/areas/%2A/ospf_interfaces/%2A?attributes=&depth=2&selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_ospf_interfaces
+  delegate_to: localhost
+
+- name: Get ospf active interfaces
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/ospf_routers/%2A?attributes=active_interfaces&selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_ospf_active_interfaces
+  delegate_to: localhost
+
+- name: Get physical interfaces
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/interfaces/%2A?selector=writable&filter=type%3Asystem"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_physical_interfaces
+  delegate_to: localhost
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_physical_interfaces: "{{ get_physical_interfaces.json | default({}) }}"
+    get_ospf_interfaces: "{{ get_ospf_interfaces.json | default({}) }}"
+    get_ospf_active_interfaces: "{{ get_ospf_active_interfaces.json | default({}) }}"

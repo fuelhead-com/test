@@ -1,0 +1,25 @@
+---
+- name: Generate physical ospf interface config
+  ansible.builtin.set_fact:
+    generate_physical_ospf_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_physical_ospf_interface_config
+      }}
+
+- name: Generate physical interface config
+  ansible.builtin.set_fact:
+    generate_physical_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_physical_interface_config
+      }}
+
+- name: Generate physical ospf active interface config
+  ansible.builtin.set_fact:
+    generate_physical_ospf_active_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_physical_ospf_active_interface_config
+      }}
+

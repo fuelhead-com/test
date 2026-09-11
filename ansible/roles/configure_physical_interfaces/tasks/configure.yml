@@ -1,0 +1,108 @@
+---
+- name: Enable routing on physical ospf interfaces
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ body }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_physical_ospf_interface_config.enable_routing | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"
+
+- name: Post physical ospf interfaces
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_physical_ospf_interface_config.enable_ospf_interfaces | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"
+
+- name: Delete physical ospf interfaces
+  vars:
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_physical_ospf_interface_config.disable_ospf_interfaces | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"
+
+- name: Put physical interfaces
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 200
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: put
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_physical_interface_config.put | default({}) | dict2items }}"
+  loop_control:
+    label: "Interface: {{ item.key }}"
+
+- name: Patch no ip ospf passive interfaces
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ body }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_physical_ospf_active_interface_config.patch | default({}) | dict2items }}"
+  loop_control:
+    label: "OSPF process: {{ item.key }}"

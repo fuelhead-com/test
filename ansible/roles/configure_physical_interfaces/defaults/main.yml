@@ -1,0 +1,136 @@
+---
+physical_interfaces_schema:
+  interface: # physical interface 1-256
+    enabled:
+      valid:
+        - true
+        - false
+      default: false
+    description:
+      default: null
+    interfaces: # List of physical interfaces
+      default: null
+    routing:
+      valid:
+        - true
+        - false
+      default: true
+    ipv4_address:
+      default: null
+    ip_mtu:
+      valid:
+        min: 68
+        max: 9198
+      default: 1500
+    ip_ospf_area: # Area id
+      default: null
+    ip_ospf_bfd:
+      valid:
+        - true
+        - false
+      default: default
+    ip_ospf_enabled:
+      valid:
+        - true
+        - false
+      default: true
+    ip_ospf_keychain: # Name of keychain
+      default: null
+    ip_ospf_network:
+      valid:
+        - broadcast
+        - point-to-point
+      default: null
+    ip_ospf_passive:
+      valid:
+        - true
+        - false
+      default: true
+    ip_ospf_process:
+      valid:
+        min: 1
+        max: 65535
+      default: null
+    mtu:
+      valid:
+        min: 46
+        max: 9198
+      default: 1500
+    qos_cos:
+      valid:
+        min: 0
+        max: 7
+      default: null
+    qos_dscp:
+      valid:
+        min: 0
+        max: 63
+      default: null
+    qos_trust:
+      valid:
+        - qos
+        - dscp
+        - none
+      default: null
+    switchport_mode:
+      valid:
+        - access
+        - trunk
+      default: trunk
+    access_vlan: # VLAN-ID
+      default: 1
+    trunk_allowed_vlan: # List of VLANs or all
+      default: all
+    trunk_native_vlan:
+      default: 1
+    trunk_native_tagged:
+      valid:
+        - true
+        - false
+      default: false
+    stp_bpdu_filter:
+      valid:
+        - true
+        - false
+      default: false
+    stp_bpdu_guard:
+      valid:
+        - true
+        - false
+      default: false
+    stp_loop_guard:
+      valid:
+        - true
+        - false
+      default: false
+    stp_port_type:
+      valid:
+        - admin-edge
+        - admin-network
+      default: admin-network
+    stp_root_guard:
+      valid:
+        - true
+        - false
+      default: false
+    vrf:
+      default: default
+
+physical_interfaces_put_attributes:
+  - admin
+  - description
+  - ip4_address # Endast om routing är true, annars null
+  - ip_mtu # Endast om routing är true, annars null
+  - mtu
+  - ospf_auth_keychain
+  - ospf_bfd
+  - ospf_if_shutdown
+  - ospf_if_type
+  - qos_config
+  - routing
+  - stp_config
+  - user_config
+  - vlan_mode # Endast om routing är false, annars null (access, native-tagged eller native-untagged)
+  - vlan_tag # Detta är native vlan oavsett om det är taggat eller otaggat. Om porten är access så är detta vlanet. Endast om routing är false , annars null
+  - vlan_trunks # Dictionary med allowed vlans eller {} om alla vlan ska tillåtas. Endast om routing är false, annars {}
+  - vrf
