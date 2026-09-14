@@ -1,0 +1,16 @@
+---
+- name: Generate EVPN config
+  ansible.builtin.set_fact:
+    generate_evpn_config: >-
+      {{
+        vars
+        | aoscx_generate_evpn_config
+      }}
+
+- name: Generate EVPN VLAN config
+  ansible.builtin.set_fact:
+    generate_evpn_vlan_config: >-
+      {{
+        vars
+        | aoscx_generate_evpn_vlan_config
+      }}

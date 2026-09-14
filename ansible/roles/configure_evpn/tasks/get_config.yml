@@ -1,0 +1,31 @@
+---
+- name: Get EVPN configuration
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/evpn"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_evpn
+  delegate_to: localhost
+
+- name: Get EVPN VLANs
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/evpn/evpn_vlans?depth=2"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_evpn_vlans
+  delegate_to: localhost
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_evpn: "{{ get_evpn.json | default({}) }}"
+    get_evpn_vlans: "{{ get_evpn_vlans.json | default({}) }}"

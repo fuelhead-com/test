@@ -1,0 +1,126 @@
+---
+- name: Post EVPN
+  vars:
+    body: "{{ generate_evpn_config.post.body }}"
+    url: "{{ generate_evpn_config.post.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: 
+    - evpn is defined
+    - generate_evpn_config.post != {}
+
+- name: Put EVPN
+  vars:
+    body: "{{ generate_evpn_config.put.body }}"
+    url: "{{ generate_evpn_config.put.url }}"
+    code: 
+      - 200
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: put
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: 
+    - evpn is defined
+    - generate_evpn_config.put != {}
+
+- name: Post EVPN VLAN
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 201
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: post
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_evpn_vlan_config.post | default({}) | dict2items }}"
+  loop_control:
+    label: "VLAN: {{ item.key }}"
+
+- name: Put EVPN VLAN
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 200
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: put
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_evpn_vlan_config.put | default({}) | dict2items }}"
+  loop_control:
+    label: "VLAN: {{ item.key }}"
+
+- name: Delete EVPN VLAN
+  vars:
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_evpn_vlan_config.delete | default({}) | dict2items }}"
+  loop_control:
+    label: "VLAN: {{ item.key }}"
+
+- name: Delete EVPN
+  vars:
+    url: "{{ generate_evpn_config.delete.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: delete
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: generate_evpn_config.delete != {}

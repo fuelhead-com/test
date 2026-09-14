@@ -1,0 +1,51 @@
+evpn_shema:
+  arp_suppression_enable:
+    valid:
+      - true
+      - false
+    default: false
+  mac_move_count:
+    valid:
+      min: 2
+      max: 10
+    default: 5
+  mac_move_timer:
+    valid:
+      min: 1
+      max: 1000
+    default: 180
+  redistribute_local_mac:
+    valid:
+      - true
+      - false
+    default: false
+  redistribute_local_svi:
+    valid:
+      - true
+      - false
+    default: false
+
+evpn_post_attributes:
+  - arp_suppression_enable
+  - mac_move_count
+  - mac_move_timer
+  - redistribute
+
+evpn_put_attributes:
+  - arp_suppression_enable
+  - mac_move_count
+  - mac_move_timer
+  - redistribute
+
+evpn_vlan_post_attributes:
+  - export_route_targets
+  - import_route_targets
+  - rd
+  - redistribute
+  - vlan
+
+evpn_vlan_put_attributes:
+  - export_route_targets
+  - import_route_targets
+  - rd
+  - redistribute
