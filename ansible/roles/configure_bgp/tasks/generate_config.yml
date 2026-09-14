@@ -1,0 +1,16 @@
+---
+- name: Generate BGP router config
+  ansible.builtin.set_fact:
+    generate_bgp_router_config: >-
+      {{
+        vars
+        | aoscx_generate_bgp_router_config
+      }}
+
+- name: Generate BGP neighbor config
+  ansible.builtin.set_fact:
+    generate_bgp_neighbor_config: >-
+      {{
+        vars
+        | aoscx_generate_bgp_neighbor_config
+      }}

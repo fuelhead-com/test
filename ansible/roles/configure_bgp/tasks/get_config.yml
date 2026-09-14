@@ -1,0 +1,36 @@
+---
+- name: Get BGP routers
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/bgp_routers/%2A?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_bgp_routers
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_bgp_routers
+  ansible.builtin.set_fact:
+    get_bgp_routers: "{{ get_bgp_routers.json | default({}) }}"
+
+- name: Get BGP neighbors
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/bgp_routers/%2A/bgp_neighbors/%2A?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_bgp_neighbors
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_bgp_neighbors
+  ansible.builtin.set_fact:
+    get_bgp_neighbors: "{{ get_bgp_neighbors.json | default({}) }}"

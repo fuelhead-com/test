@@ -1,0 +1,237 @@
+---
+router_bgp_schema:
+  asn: # The autonomous system number (ASN) for the domain
+    always_compare_med:
+      valid:
+        - true
+        - false
+      default: true
+    bestpath_as_path_multipath_relax:
+      valid:
+        - true
+        - false
+      default: true
+    deterministic_med:
+      valid:
+        - true
+        - false
+      default: true
+    enable:
+      valid:
+        - true
+        - false
+      default: true
+    log_neighbor_changes:
+      valid:
+        - true
+        - false
+      default: true
+    maximum_paths:
+      valid:
+        min: 1
+        max: 8
+      default: 8
+    router_id: # A.B.C.D  Configure the BGP router identifier for the VRF
+      default: 0.0.0.0
+    timers:
+      connect-retry:
+        valid:
+          min: 1
+          max: 65535
+        default: 120
+      holdtime:
+        valid:
+          min: 0
+          max: 65535
+        default: 180
+      keepalive:
+        valid:
+          min: 0
+          max: 65535
+        default: 60
+    vrf: 
+      default: default
+
+bgp_router_post_attributes:
+  - always_compare_med
+  - asn
+  - bestpath_as_path_multipath_relax
+  - deterministic_med
+  - protocol_disable
+  - log_neighbor_changes
+  - maximum_paths
+  - router_id
+  - timers
+
+bgp_router_put_attributes:
+  - always_compare_med
+  - bestpath_as_path_multipath_relax
+  - deterministic_med
+  - protocol_disable
+  - log_neighbor_changes
+  - maximum_paths
+  - router_id
+  - timers
+
+bgp_neighbor_schema:
+  neighbor:
+    activate:
+      ipv4-unicast:
+        valid:
+          - true
+          - false
+        default: false
+      ipv6-unicast:
+        valid:
+          - true
+          - false
+        default: false
+      l2vpn-evpn:
+        valid:
+          - true
+          - false
+        default: false
+      vpnv4-unicast:
+        valid:
+          - true
+          - false
+        default: false
+    bfd_enable:
+      valid:
+        - true
+        - false
+      default: false
+    bgp_peer_group: # Member of the peer-group
+      default: null
+    description: # LINE  Up to 80 characters describing this neighbor
+    enable:
+      valid:
+        - true
+        - false
+      default: true
+    is_peer_group:
+      valid:
+        - true
+        - false
+      default: false
+    local_interface: # Update source interface
+      default: null
+    password: # Set a password
+      default: null
+    remote_as: # Configure the AS for the BGP neighbor 
+    route_reflector_client:
+      ipv4-unicast:
+        valid:
+          - true
+          - false
+        default: false
+      ipv6-unicast:
+        valid:
+          - true
+          - false
+        default: false
+      l2vpn-evpn:
+        valid:
+          - true
+          - false
+        default: false
+      vpnv4-unicast:
+        valid:
+          - true
+          - false
+        default: false
+    send_community:
+      ipv4-unicast:
+        valid:
+          - both
+          - extended
+          - standard
+        default: none
+      ipv6-unicast:
+        valid:
+          - both
+          - extended
+          - standard
+        default: none
+      l2vpn-evpn:
+        valid:
+          - both
+          - extended
+          - standard
+        default: none
+      vpnv4-unicast:
+        valid:
+          - both
+          - extended
+          - standard
+        default: none
+    timers:
+      connect-retry:
+        valid:
+          min: 1
+          max: 65535
+        default: 120
+      holdtime:
+        valid:
+          min: 0
+          max: 65535
+        default: 180
+      keepalive:
+        valid:
+          min: 0
+          max: 65535
+        default: 60
+
+bgp_neighbor_peer_group_post_attributes:
+  - ip_or_ifname_or_group_name
+  - activate
+  - bfd_enable
+  - description
+  - is_peer_group
+  - local_interface
+  - password
+  - remote_as
+  - route_reflector_client
+  - send_community
+  - shutdown
+  - timers
+
+bgp_neighbor_post_attributes:
+  - ip_or_ifname_or_group_name
+  - activate
+  - bfd_enable
+  - bgp_peer_group
+  - description
+  - is_peer_group
+  - local_interface
+  - password
+  - remote_as
+  - route_reflector_client
+  - send_community
+  - shutdown
+  - timers
+
+bgp_neighbor_peer_group_put_attributes:
+  - activate
+  - bfd_enab
+  - description
+  - local_interface
+  - password
+  - remote_as
+  - route_reflector_client
+  - send_community
+  - shutdown
+  - timers
+
+bgp_neighbor_put_attributes:
+  - activate
+  - bfd_enable
+  - bgp_peer_group
+  - description
+  - local_interface
+  - password
+  - remote_as
+  - route_reflector_client
+  - send_community
+  - shutdown
+  - timers
