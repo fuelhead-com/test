@@ -1,0 +1,17 @@
+---
+- name: Get VSX
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vsx?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_vsx
+  delegate_to: localhost
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_vsx: "{{ get_vsx.json | default({}) }}"

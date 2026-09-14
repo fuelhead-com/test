@@ -1,0 +1,47 @@
+---
+vsx_schema:
+  system_mac: # Configure the System-MAC address in XX:XX:XX:XX:XX:XX
+    default: null
+  inter_switch_link: # Configure the interface to use as the inter-switch link
+    default: null
+  device_role:
+    valid:
+      - primary
+      - secondary
+    default: null
+  keepalive_peer_ip:
+    default: null
+  keepalive_src_ip:
+    default: null
+  vrf:
+    default: null
+  linkup_delay_timer:
+    valid:
+      min: 0
+      max: 600
+    default: 180
+  split_recovery_disable:
+    valid:
+      - true
+      - false
+    default: false
+
+vsx_post_attributes:
+  - system_mac
+  - isl_port
+  - device_role
+  - keepalive_peer_ip
+  - keepalive_src_ip
+  - keepalive_vrf
+  - linkup_delay_timer
+  - split_recovery_disable
+
+vsx_put_attributes:
+  - system_mac
+  - isl_port
+  - device_role
+  - keepalive_peer_ip
+  - keepalive_src_ip
+  - keepalive_vrf
+  - linkup_delay_timer
+  - split_recovery_disable

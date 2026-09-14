@@ -1,0 +1,8 @@
+---
+- name: Generate vsx config
+  ansible.builtin.set_fact:
+    generate_vsx_config: >-
+      {{
+        vars
+        | aoscx_generate_vsx_config
+      }}
