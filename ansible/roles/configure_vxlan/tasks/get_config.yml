@@ -1,0 +1,31 @@
+---
+- name: Get VXLAN interface
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/interfaces/%2A?attributes=&selector=writable&filter=type%3Avxlan"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_vxlan_interface
+  delegate_to: localhost
+
+- name: Get VXLAN vni
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/virtual_network_ids/vxlan_vni,%2A?filter=type%3Avxlan_vni"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_vxlan_vni
+  delegate_to: localhost
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_vxlan_interface: "{{ get_vxlan_interface.json | default({}) }}"
+    get_vxlan_vni: "{{ get_vxlan_vni.json | default({}) }}"

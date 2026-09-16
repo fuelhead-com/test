@@ -1,0 +1,15 @@
+- name: Generate VXLAN interface config
+  ansible.builtin.set_fact:
+    generate_vxlan_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_vxlan_interface_config
+      }}
+
+- name: Generate VXLAN vni config
+  ansible.builtin.set_fact:
+    generate_vxlan_vni_config: >-
+      {{
+        vars
+        | aoscx_generate_vxlan_vni_config
+      }}

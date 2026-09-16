@@ -1,0 +1,23 @@
+---
+# - name: Print vxlan_interface
+#   ansible.builtin.debug:
+#     var: vxlan_interface
+
+# - name: Print get_vxlan_interface
+#   ansible.builtin.debug:
+#     var: get_vxlan_interface
+
+# - name: Print generate_vxlan_interface_config
+#   ansible.builtin.debug:
+#     var: generate_vxlan_interface_config
+
+# - name: Print get_vxlan_vni
+#   ansible.builtin.debug:
+#     var: get_vxlan_vni
+
+# - name: Print generate_vxlan_vni_config
+#   ansible.builtin.debug:
+#     var: generate_vxlan_vni_config
+
+
+

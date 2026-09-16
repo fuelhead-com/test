@@ -1,0 +1,33 @@
+---
+vxlan_interface_schema:
+  vxlan1: # vxlan1 only!!
+    enabled:
+      valid:
+        - true
+        - false
+      default: true
+    source_ip: # Tunnel source IP
+
+vxlan_interface_post_attributes:
+  - admin
+  - description
+  - name
+  - options
+  - type
+
+vxlan_interface_put_attributes:
+  - admin
+  - description
+  - options
+
+vxlan_vni_post_attributes:
+  - id
+  - interface
+  - routing
+  - type
+  - vlan
+
+vxlan_vni_put_attributes:
+  - interface
+  - routing
+  - vlan
