@@ -1,0 +1,8 @@
+---
+mka_policies:
+  mka-wan:
+    cak: "{{ cak_key_1 }}"
+    update_cak: false
+    ckn: "{{ ckn_key_1 }}"
+    key_server_priority: 5
+    mode: psk

@@ -3,6 +3,8 @@ physical_interfaces:
   1/1/1:
     enabled: true
     description: description interface 1
+    macsec_policy: macsec-wan
+    mka_policy: mka-wan
     routing: false
     switchport_mode: trunk
     trunk_native_tagged: true
@@ -19,6 +21,8 @@ physical_interfaces:
     description: description interface 2
     routing: true
     ipv4_address: 10.11.12.13/24
+    macsec_policy: macsec-wan
+    mka_policy: mka-wan
     mtu: 9198
     ip_mtu: 9198
     qos_trust: dscp
@@ -32,13 +36,15 @@ physical_interfaces:
   1/1/3:
     enabled: true
     routing: false
-    description: Free
+    description: asdfasdf
     switchport_mode: access
     access_vlan: 10
 
   1/1/4:
     enabled: true
     description: Test trunk all vlans
+    macsec_policy: macsec-wan
+    mka_policy: mka-wan
     routing: false
     switchport_mode: trunk
     trunk_native_tagged: false

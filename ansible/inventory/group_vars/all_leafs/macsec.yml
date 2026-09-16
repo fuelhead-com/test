@@ -1,0 +1,9 @@
+---
+macsec_policies:
+  macsec-wan:
+    cipher_suite_gcm_aes_128_enabled: false
+    cipher_suite_gcm_aes_256_enabled: false
+    cipher_suite_gcm_aes_xpn_128_enabled: false
+    cipher_suite_gcm_aes_xpn_256_enabled: true
+    replay_protect_enable: true
+    replay_window_size: 100
