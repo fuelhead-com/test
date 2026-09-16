@@ -1,0 +1,18 @@
+---
+- name: Get VRFs
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/macsec_policies/%2A?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_macsec_policies
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key from get_vrfs
+  ansible.builtin.set_fact:
+    get_macsec_policies: "{{ get_macsec_policies.json | default({}) }}"

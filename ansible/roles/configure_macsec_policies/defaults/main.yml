@@ -1,0 +1,44 @@
+---
+macsec_policies_schema:
+  policy: # Name of macsec policy
+    cipher_suite_gcm_aes_128_enabled:
+      valid:
+        - true
+        - false
+      default: false
+    cipher_suite_gcm_aes_256_enabled:
+      valid:
+        - true
+        - false
+      default: false
+    cipher_suite_gcm_aes_xpn_128_enabled:
+      valid:
+        - true
+        - false
+      default: false
+    cipher_suite_gcm_aes_xpn_256_enabled:
+      valid:
+        - true
+        - false
+      default: false
+    replay_protect_enable:
+      valid:
+        - true
+        - false
+      default: false
+    replay_window_size:
+      valid:
+        min: 0
+        max: 4294967295
+      default: 0
+
+macsec_policies_post_attributes:
+  - name
+  - cipher_suites
+  - replay_protect_disable
+  - replay_window
+
+macsec_policies_put_attributes:
+  - cipher_suites
+  - replay_protect_disable
+  - replay_window
