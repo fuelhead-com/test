@@ -1,0 +1,42 @@
+---
+- name: Get icmp global config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system?attributes=icmp_redirect_disable,icmp_throttle,icmp_unreachable_disable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 200
+    validate_certs: false
+  register: running_system_config
+  delegate_to: localhost
+
+- name: set_facts
+  ansible.builtin.set_fact:
+    system_config:
+      required: >-
+        {{
+          {
+            "icmp_redirect_disable": (icmp_redirect_disable | default(false) | bool ),
+            "icmp_throttle": (icmp_throttle | default(1) | int),
+            "icmp_unreachable_disable": (icmp_unreachable_disable | default(false) | bool)
+          }
+        }}
+      configured: "{{ running_system_config.json }}"
+
+- name: Patch icmp global config
+  vars:
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ system_config.required }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: system_config.required != system_config.configured
