@@ -1,0 +1,24 @@
+---
+- name: Generate vlan interface config
+  ansible.builtin.set_fact:
+    generate_vlan_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_vlan_interface_config
+      }}
+
+- name: Generate vlan ospf interface config
+  ansible.builtin.set_fact:
+    generate_vlan_ospf_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_vlan_ospf_interface_config
+      }}
+
+- name: Generate vlan ospf active interface config
+  ansible.builtin.set_fact:
+    generate_vlan_ospf_active_interface_config: >-
+      {{
+        vars
+        | aoscx_generate_vlan_ospf_active_interface_config
+      }}

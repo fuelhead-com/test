@@ -1,0 +1,67 @@
+vlan_interface_schema:
+  interface: # Vlan interface name
+    description:
+      default: null
+    enabled:
+      valid:
+        - true
+        - false
+      default: true
+    ip_ospf_area: # Area id
+      default: null
+    ip_ospf_bfd:
+      valid:
+        - true
+        - false
+      default: default
+    ip_ospf_enabled:
+      valid:
+        - true
+        - false
+      default: true
+    ip_ospf_keychain: # Name of keychain
+      default: null
+    ip_ospf_network:
+      valid:
+        - broadcast
+        - point-to-point
+      default: null
+    ip_ospf_passive:
+      valid:
+        - true
+        - false
+      default: true
+    ip_ospf_process:
+      valid:
+        min: 1
+        max: 65535
+      default: null
+    ip_mtu:
+      valid:
+        min: 68
+        max: 9198
+      default: 1500
+    ipv4_address: # A.B.C.D Interface IP Address
+      default: null
+
+vlan_interface_post_attributes:
+  - admin
+  - description
+  - ip_mtu
+  - ip4_address
+  - name
+  - ospf_auth_keychain
+  - ospf_bfd
+  - ospf_if_shutdown
+  - ospf_if_type
+  - type
+
+vlan_interface_put_attributes:
+  - admin
+  - description
+  - ip_mtu
+  - ip4_address
+  - ospf_auth_keychain
+  - ospf_bfd
+  - ospf_if_shutdown
+  - ospf_if_type
