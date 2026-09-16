@@ -83,6 +83,28 @@ def aoscx_generate_physical_interface_config(all_vars):
         }
 
         admin = "up" if value.get("enabled", defaults.get("enabled", False)) else "down"
+
+        # macsec_policy attribute only on supported switches
+        macsec_support = "macsec_policy" in get_physical_interfaces.get(interface, {}).keys()
+
+        if macsec_support:
+            macsec_policy = value.get("macsec_policy", defaults.get("macsec_policy", None))
+
+            if macsec_policy is not None:
+                macsec_policy = {
+                    macsec_policy: f"/rest/{restversion}/system/macsec_policies/{macsec_policy}"
+                }
+
+        # mka_policy attribute only on supported switches
+        mka_support = "mka_policy" in get_physical_interfaces.get(interface, {}).keys()
+
+        if mka_support:
+            mka_policy = value.get("mka_policy", defaults.get("mka_policy", None))
+
+            if mka_policy is not None:
+                mka_policy = {
+                    mka_policy: f"/rest/{restversion}/system/mka_policies/{mka_policy}"
+                }
         
         user_config = {
             "admin": admin,
@@ -216,6 +238,14 @@ def aoscx_generate_physical_interface_config(all_vars):
                 "vlan_trunks": vlan_trunks,
                 "vrf": vrf
             }
+
+            # macsec_policy attribute only on supported switches
+            if macsec_support:
+                config_attributes['macsec_policy'] = macsec_policy
+
+            # mka_policy attribute only on supported switches
+            if mka_support:
+                config_attributes['mka_policy'] = mka_policy
 
         else:
             # Configuration attributes för lag mmember interfaces
