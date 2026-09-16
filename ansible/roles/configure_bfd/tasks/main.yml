@@ -1,0 +1,37 @@
+---
+- name: Get system config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system?attributes=bfd_enable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 200
+    validate_certs: false
+  register: running_system_config
+  delegate_to: localhost
+
+- name: set_facts
+  ansible.builtin.set_fact:
+    bfd_config:
+      required:
+        bfd_enable: "{{ bfd_enable | default(false) }}"
+      configured:
+        bfd_enable: "{{ running_system_config.json.bfd_enable }}"
+
+- name: Patch bfd configuration
+  vars:
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ bfd_config.required }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: bfd_config.required != bfd_config.configured
