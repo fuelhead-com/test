@@ -1,0 +1,8 @@
+---
+- name: Generate MKA Policies config
+  ansible.builtin.set_fact:
+    generate_mka_policies_config: >-
+      {{
+        vars
+        | aoscx_generate_mka_policies_config
+      }}

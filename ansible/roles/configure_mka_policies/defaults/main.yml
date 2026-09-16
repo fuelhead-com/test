@@ -1,0 +1,33 @@
+---
+mka_policies_schema:
+  policy: # Name of mka policy:
+    cak:
+    update_cak:
+      valid:
+        - true
+        - false
+      default: false
+    ckn:
+    key_server_priority:
+      valid:
+        min: 0
+        max: 255
+      default: 0
+    mode:
+      valid: 
+        - psk
+        - eap-tls
+      default: null
+
+mka_policies_post_attributes:
+  - name
+  - cak
+  - ckn
+  - key_server_priority
+  - mode
+
+mka_policies_put_attributes:
+  - cak
+  - ckn
+  - key_server_priority
+  - mode
