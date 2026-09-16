@@ -1,0 +1,107 @@
+aaa_schema:
+  accounting_fail_through:
+    valid:
+      - true
+      - false
+    default: false
+  authentication_fail_through:
+    valid:
+      - true
+      - false
+    default: false
+  authorization_fail_through:
+    valid:
+      - true
+      - false
+    default: false
+  tacacs_passkey:
+    default: null
+  tacacs_timeout:
+    valid:
+      min: 1
+      max: 60
+    default: 5
+
+aaa_patch_attributes:
+  - authorization_fail_through
+  - accounting_fail_through
+  - fail_through
+  - tacacs_timeout
+
+aaa_server_groups_shema:
+  group_name: # Name og group
+  group_type:
+    valid:
+      - radius
+      - tacacs
+    default: null
+    
+aaa_server_groups_post_attributes:
+  - group_name
+  - group_type
+
+aaa_server_groups_put_attributes:
+  - group_type
+
+tacacs_servers_schema:
+  server: # Server ip adress
+    auth_type:
+      valid:
+        - pap
+        - chap
+      default: null
+    default_group_priority:
+      valid:
+        min: 1
+        max: 9223372036854775807
+      default: 1
+    group:
+      default: tacacs
+    passkey:
+      default: null
+    tcp_port:
+      valid:
+        min: 1
+        max: 65535
+      default: 49
+    timeout:
+      valid:
+        min: 1
+        max: 60
+      default: 1
+    vrf:
+      default: default
+
+tacacs_servers_post_attributes:
+  - address
+  - auth_type
+  - default_group_priority
+  - group
+  - passkey
+  - tcp_port
+  - timeout
+  - vrf
+
+tacacs_servers_put_attributes:
+  - auth_type
+  - default_group_priority
+  - group
+  - passkey
+  - timeout
+
+aaa_server_group_prios_schema:
+  type:
+    accounting_group_prios:
+      default: {}
+    authentication_group_prios:
+      default: {}
+    authorization_group_prios:
+      default: {}
+    radius_authorize_only_group_prios:
+      default: {}
+
+aaa_server_group_prios_put_attributes:
+  - accounting_group_prios
+  - authentication_group_prios
+  - authorization_group_prios
+  - radius_authorize_only_group_prios

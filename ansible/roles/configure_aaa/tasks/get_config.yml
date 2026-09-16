@@ -1,0 +1,63 @@
+---
+- name: Get global AAA config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system?attributes=aaa&selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_aaa_config
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Get AAA server groups
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/aaa_server_groups/%2A?selector=writable&filter=origin%3Aconfiguration"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_aaa_server_groups
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Get TACACS servers
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A/tacacs_servers/%2A,%2A"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_tacacs_servers
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Get AAA server group prios
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/aaa_server_group_prios?depth=2&selector=configuration"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_aaa_server_group_prios
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_aaa_config: "{{ get_aaa_config.json | default({}) }}"
+    get_aaa_server_groups: "{{ get_aaa_server_groups.json | default({}) }}"
+    get_tacacs_servers: "{{ get_tacacs_servers.json | default({}) }}"
+    get_aaa_server_group_prios: "{{ get_aaa_server_group_prios.json | default({}) }}"

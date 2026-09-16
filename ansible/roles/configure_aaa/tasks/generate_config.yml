@@ -1,0 +1,47 @@
+---
+- name: Set AAA config compare
+  ansible.builtin.set_fact:
+    system_aaa_config:
+      required: >-
+        {{
+          {
+            "aaa": {
+              "accounting_fail_through": (aaa.accounting_fail_through | default((aaa_schema.accounting_fail_through.default | default(false))) | bool),
+              "authorization_fail_through": (aaa.authorization_fail_through | default((aaa_schema.authorization_fail_through.default | default(false))) | bool),
+              "fail_through": (aaa.authentication_fail_through | default((aaa_schema.authentication_fail_through.default | default(false))) | bool),
+              "tacacs_timeout": (aaa.tacacs_timeout | default((aaa_schema.tacacs_timeout.default | default(5))) | int)
+            }
+          }
+        }}
+      configured:
+        aaa: >-
+          {{
+            get_aaa_config.aaa
+            | dict2items
+            | selectattr('key', 'in', aaa_patch_attributes)
+            | items2dict
+          }}
+
+- name: Generate AAA server groups config
+  ansible.builtin.set_fact:
+    generate_aaa_server_groups_config: >-
+      {{
+        vars
+        | aoscx_generate_aaa_server_groups_config
+      }}
+
+- name: Generate TACACS servers config
+  ansible.builtin.set_fact:
+    generate_tacacs_servers_config: >-
+      {{
+        vars
+        | aoscx_generate_tacacs_servers_config
+      }}
+
+- name: Generate AAA server group prios config
+  ansible.builtin.set_fact:
+    generate_aaa_server_group_prios_config: >-
+      {{
+        vars
+        | aoscx_generate_aaa_server_group_prios_config
+      }}
