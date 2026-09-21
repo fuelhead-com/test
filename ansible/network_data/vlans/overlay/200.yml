@@ -1,0 +1,15 @@
+---
+# This file was automatically created by the Create Overlay VLAN workflow.
+id: 200
+name: Test 200
+description: asdfasdf
+enabled: True
+ip_igmp_snooping_enable: False
+type: overlay
+scope:
+  type: group
+  targets:
+    - all_leafs
+vlan_tagging:
+  - standard
+  - devops
