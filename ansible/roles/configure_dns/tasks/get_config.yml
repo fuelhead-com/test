@@ -1,0 +1,17 @@
+- name: Get DNS configuration
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A?attributes=dns_domain_name,dns_name_servers&selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_dns_config
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_dns_config: "{{ get_dns_config.json | default({}) }}"

@@ -1,0 +1,10 @@
+dns_schema:
+  vrf: # Name of vrf for dns configuration
+    dns_domain_name:
+      default: null
+    dns_name_servers:
+      default: {}
+
+dns_patch_attributes:
+  - dns_domain_name
+  - dns_name_servers

@@ -1,0 +1,45 @@
+- name: Clear DNS configuration
+  vars:
+    body:
+      dns_domain_name:
+      dns_name_servers:
+    url: "{{ item.value.url }}"
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ body }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_dns_config.patch | default({}) | dict2items }}"
+  loop_control:
+    label: "VRF: {{ item.key }}"
+
+- name: Patch DNS configuration
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ body }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_dns_config.patch | default({}) | dict2items }}"
+  loop_control:
+    label: "VRF: {{ item.key }}"
