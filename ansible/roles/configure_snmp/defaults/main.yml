@@ -1,0 +1,24 @@
+---
+snmp_schema:
+  snmp_communities: # List of SNMP communities to configure on switch
+    default: []
+  system_contact:
+    default: null
+  system_description:
+    default: null
+  system_location:
+    default: null
+  vrfs: # List of VRFs to enable snmp-server on
+    default: ["default"]
+
+snmp_system_patch_attributes:
+  - snmp_communities
+  - other_config
+
+snmp_system_other_config_patch_attributes:
+  - system_contact
+  - system_description
+  - system_location
+
+snmp_vrf_patch_attributes:
+  - snmp_enable

@@ -1,0 +1,16 @@
+---
+- name: Generate SNMP config
+  ansible.builtin.set_fact:
+    generate_snmp_config: >-
+      {{
+        vars
+        | aoscx_generate_snmp_config
+      }}
+
+- name: Generate SNMP VRF config
+  ansible.builtin.set_fact:
+    generate_snmp_vrf_config: >-
+      {{
+        vars
+        | aoscx_generate_snmp_vrf_config
+      }}

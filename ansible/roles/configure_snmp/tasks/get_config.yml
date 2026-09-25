@@ -1,0 +1,33 @@
+---
+- name: Get snmp config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system?attributes=other_config,snmp_communities&selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_snmp_config
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Get snmp VRFs
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/vrfs/%2A?attributes=snmp_enable&selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_vrfs
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_snmp_config: "{{ get_snmp_config.json | default({}) }}"
+    get_vrfs: "{{ get_vrfs.json | default({}) }}"

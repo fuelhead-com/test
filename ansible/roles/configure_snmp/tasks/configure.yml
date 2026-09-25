@@ -1,0 +1,59 @@
+---
+- name: Clear SNMP communities
+  vars:
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body:
+      snmp_communities: null
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: (generate_snmp_config.patch.body | default({})) | length > 0
+
+- name: Patch SNMP global settings
+  vars:
+    code:
+      - 204
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    body: "{{ generate_snmp_config.patch.body }}"
+    status_code: "{{ code }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  when: (generate_snmp_config.patch.body | default({})) | length > 0
+
+- name: Enable/disable SNMP on VRFs
+  vars:
+    body: "{{ item.value.body }}"
+    url: "{{ item.value.url }}"
+    code: 
+      - 204
+  ansible.builtin.uri:
+    url: "{{ url }}"
+    method: patch
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    body_format: json
+    status_code: "{{ code }}"
+    body: "{{ body }}"
+    validate_certs: false
+  register: response
+  changed_when: response.status in code
+  delegate_to: localhost
+  loop: "{{ generate_snmp_vrf_config.patch | default({}) | dict2items }}"
+  loop_control:
+    label: "VRF: {{ item.key }}"
