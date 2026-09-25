@@ -1,0 +1,8 @@
+---
+- name: Generate syslog remotes config
+  ansible.builtin.set_fact:
+    generate_syslog_remotes_config: >-
+      {{
+        vars
+        | aoscx_generate_syslog_remotes_config
+      }}

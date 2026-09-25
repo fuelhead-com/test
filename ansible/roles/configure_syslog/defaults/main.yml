@@ -1,0 +1,58 @@
+---
+syslog_remotes_schema:
+  remote: # IP or FQDN of remote syslog server
+    enabled:
+      valid:
+        - true
+        - false
+      default: true
+    protocol:
+      valid:
+        - tcp
+        - udp
+      default: udp
+    port_number:
+      valid:
+        min: 1
+        max: 65535
+      default: null
+    rate_limit_burst:
+      valid:
+        min: 1
+        max: 4294967295
+      default: null
+    rate_limit_interval:
+      valid:
+        min: 30
+        max: 4294967295
+      default: 30
+    severity:
+      valid:
+        - debug
+        - info
+        - notice
+        - warning
+        - err
+        - crit
+        - alert
+        - emerg 
+      default: info
+    vrf:
+      default: default
+
+syslog_remotes_post_attributes:
+  - disable
+  - port_number
+  - remote_host
+  - rate_limit
+  - severity
+  - transport
+  - vrf
+
+syslog_remotes_put_attributes:
+  - disable
+  - port_number
+  - rate_limit
+  - severity
+  - transport
+  - vrf
