@@ -1,0 +1,68 @@
+---
+sflow_schema:
+  sflow_name: # Name of sFlow - Defaults to "global"
+    agent_address: # Source ip
+    enabled:
+      valid:
+        - true
+        - false
+      default: false
+    header:
+      valid:
+        min: 64
+        max: 256
+      default: 128
+    max_datagram:
+      valid:
+        min: 200
+        max: 1400
+      default: 1400
+    polling:
+      valid:
+        min: 10
+        max: 3600
+      default: 30
+    reachability_check:
+      valid:
+        - true
+        - false
+      default: true
+    sampling:
+      valid:
+        min: 1
+        max: 1000000000
+      default: 4096
+      
+sflow_collector_schema:
+  collector_ip: # IP of collector
+    udp_port:
+      valid:
+        min: 1
+        max: 65535
+      default: 6343
+    vrf:
+      default: default
+
+sflow_post_attributes:
+  - name
+  - agent_address
+  - enabled
+  - header
+  - max_datagram
+  - polling
+  - reachability_check
+  - sampling
+
+sflow_put_attributes:
+  - agent_address
+  - enabled
+  - header
+  - max_datagram
+  - polling
+  - reachability_check
+  - sampling
+
+sflow_collector_post_attributes:
+  - ip_address
+  - udp_port
+  - vrf

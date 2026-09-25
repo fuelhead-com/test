@@ -1,0 +1,16 @@
+---
+- name: Generate sFlow config
+  ansible.builtin.set_fact:
+    generate_sflow_config: >-
+      {{
+        vars
+        | aoscx_generate_sflow_config
+      }}
+
+- name: Generate sFlow collector config
+  ansible.builtin.set_fact:
+    generate_sflow_collector_collector_config: >-
+      {{
+        vars
+        | aoscx_generate_sflow_collector_collector_config
+      }}

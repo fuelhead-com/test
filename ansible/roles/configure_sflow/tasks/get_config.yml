@@ -1,0 +1,33 @@
+---
+- name: Get sFlow global config
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/sflows/%2A?selector=writable"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_sflow
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Get sFlow collectors
+  ansible.builtin.uri:
+    url: "{{ baseurl }}/system/sflows/%2A/collectors/%2A,%2A,%2A"
+    method: get
+    headers:
+      Cookie: "{{ login.cookies_string }}"
+    status_code: 
+      - 200
+      - 404
+    validate_certs: false
+  register: get_sflow_collectors
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Remove json key
+  ansible.builtin.set_fact:
+    get_sflow: "{{ get_sflow.json | default({}) }}"
+    get_sflow_collectors: "{{ get_sflow_collectors.json | default({}) }}"
