@@ -1,0 +1,73 @@
+aaa:
+  accounting_fail_through: false
+  authentication_fail_through: true
+  authorization_fail_through: true
+  tacacs_passkey: "{{ tacacs_key }}"
+  update_tacacs_passkey: false
+  tacacs_timeout: 3
+
+aaa_server_groups:
+  tacacs-servers:
+    group_type: tacacs
+  test_group:
+    group_type: radius
+  asdf:
+    group_type: radius
+
+aaa_server_group_prios:
+  console:
+    accounting_group_prios:
+      0: tacacs-servers
+      1: local
+    authentication_group_prios:
+      0: tacacs-servers
+      1: local
+    authorization_group_prios:    
+      0: tacacs-servers
+      1: local
+  default:
+    accounting_group_prios:
+      0: tacacs-servers
+      1: local
+    authentication_group_prios:
+      0: tacacs-servers
+      1: local
+    authorization_group_prios:    
+      0: tacacs-servers
+      1: local
+  https-server:
+    accounting_group_prios:
+      0: tacacs-servers
+      1: local
+    authentication_group_prios:
+      0: tacacs-servers
+      1: local
+    authorization_group_prios:    
+      0: tacacs-servers
+      1: local
+  ssh:
+    accounting_group_prios:
+      0: tacacs-servers
+      1: local
+    authentication_group_prios:
+      0: tacacs-servers
+      1: local
+    authorization_group_prios:    
+      0: tacacs-servers
+      1: local
+
+tacacs_servers:
+  mgmt:
+    12.12.12.12:
+      group:
+        - tacacs
+        - tacacs-servers
+    13.13.13.13:
+      group:
+        - tacacs
+        - tacacs-servers
+  default:
+    14.14.14.14:
+      group:
+        - tacacs
+        - tacacs-servers

@@ -1,0 +1,7 @@
+dns:
+  mgmt:
+    dns_domain_name: asdf.asdf
+    dns_name_servers:
+      - 8.8.8.8
+      - 4.4.4.4
+      - 1.1.1.1

@@ -1,0 +1,12 @@
+snmp:
+  snmp_communities:
+    - "{{ snmp_community }}"
+    - test_community
+    - example
+    - Nisse
+  system_contact: system-contact it-infrastruktur network team
+  system_description: "This is switch: {{ inventory_hostname }}"
+  system_location: "Site: S1 - Rack: AB01"
+  vrfs:
+    - mgmt
+    # - default

@@ -1,0 +1,12 @@
+---
+sflow:
+  global:
+    agent_address: "{{ ansible_host }}"
+    enabled: true
+    sflow_collector:
+      1.1.1.1:
+        udp_port: 6343
+        vrf: mgmt
+      2.2.2.2:
+        # udp_port: 6343
+        vrf: mgmt
