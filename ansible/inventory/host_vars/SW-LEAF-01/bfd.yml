@@ -1,0 +1,7 @@
+---
+bfd_global:
+  bfd_detect_multiplier: 3
+  bfd_enable: true
+  bfd_min_echo_rx_interval: 56
+  bfd_min_rx_interval: 600
+  bfd_min_tx_interval: 500
