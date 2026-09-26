@@ -1,4 +1,8 @@
 ---
+icmp_redirect_disable: true
+icmp_throttle: 1
+icmp_unreachable_disable: false
+
 keychains:
   - name: ospf-keychain
     keys: 
